@@ -1,15 +1,27 @@
-import { BrowserRouter } from 'react-router-dom';
-import { AppRouter } from './routes/AppRouter';
-import { ToastProvider } from './components/ui/Toast';
+import { BrowserRouter } from 'react-router-dom'
+import Theme from '@/components/template/Theme'
+import Layout from '@/components/layouts'
+import { AuthProvider } from '@/auth'
+import Views from '@/views'
+import appConfig from './configs/app.config'
+import './locales'
 
-const App = () => {
-  return (
-    <BrowserRouter>
-      <ToastProvider>
-        <AppRouter />
-      </ToastProvider>
-    </BrowserRouter>
-  );
-};
+if (appConfig.enableMock) {
+    import('./mock')
+}
 
-export default App;
+function App() {
+    return (
+        <Theme>
+            <BrowserRouter>
+                <AuthProvider>
+                    <Layout>
+                        <Views />
+                    </Layout>
+                </AuthProvider>
+            </BrowserRouter>
+        </Theme>
+    )
+}
+
+export default App
