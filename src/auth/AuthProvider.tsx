@@ -80,6 +80,11 @@ function AuthProvider({ children }: AuthProviderProps) {
         try {
             const resp = await apiSignIn(values)
             if (resp) {
+                console.group('🔐 Login Response')
+                console.log('📦 Raw API Response:', resp)
+                console.log('🪙 Token:', resp.token)
+                console.log('👤 resp.user from server:', resp.user)
+
                 const user = {
                     ...(resp.user || {
                         authority: ['admin'],
@@ -87,6 +92,10 @@ function AuthProvider({ children }: AuthProviderProps) {
                     userName: values.emp_id,
                     emp_id: values.emp_id
                 }
+
+                console.log('✅ Final user object stored in session:', user)
+                console.groupEnd()
+
                 handleSignIn({ accessToken: resp.token }, user)
                 redirect()
                 return {
@@ -100,6 +109,10 @@ function AuthProvider({ children }: AuthProviderProps) {
             }
             // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         } catch (errors: any) {
+            console.error('💥 Axios / Network error during login:')
+            console.error('  Status:', errors?.response?.status)
+            console.error('  Data:', errors?.response?.data)
+            console.error('  Full error:', errors)
             return {
                 status: 'failed',
                 message: errors?.response?.data?.message || errors.toString(),
@@ -131,13 +144,9 @@ function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
-    const signOut = async () => {
-        try {
-            await apiSignOut()
-        } finally {
-            handleSignOut()
-            navigatorRef.current?.navigate(appConfig.unAuthenticatedEntryPath)
-        }
+    const signOut = () => {
+        handleSignOut()
+        navigatorRef.current?.navigate(appConfig.unAuthenticatedEntryPath)
     }
     const oAuthSignIn = (
         callback: (payload: OauthSignInCallbackPayload) => void,

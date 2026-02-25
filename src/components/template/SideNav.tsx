@@ -83,16 +83,14 @@ const SideNav = ({
                 <div className="border-b border-gray-200 pt-2 w-full"></div>
             </Link>
             <div className={classNames('side-nav-content', contentClass)}>
-                <ScrollBar style={{ height: '100%' }} direction={direction}>
-                    <VerticalMenuContent
-                        collapsed={sideNavCollapse}
-                        navigationTree={navigationConfig}
-                        routeKey={currentRouteKey}
-                        direction={direction}
-                        translationSetup={translationSetup}
-                        userAuthority={userAuthority || []}
-                    />
-                </ScrollBar>
+                <VerticalMenuContent
+                    collapsed={sideNavCollapse}
+                    navigationTree={navigationConfig}
+                    routeKey={currentRouteKey}
+                    direction={direction}
+                    translationSetup={translationSetup}
+                    userAuthority={userAuthority || []}
+                />
             </div>
         </div>
     )

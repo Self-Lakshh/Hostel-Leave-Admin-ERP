@@ -19,7 +19,7 @@ const dropdownItemList: DropdownList[] = [
 const _UserDropdown = () => {
     const user = useSessionUser((state) => state.user)
     const userName = user?.emp_id
-    const email = 'Security Gate'
+    const email = 'Admin'
     const avatar = user?.avatar
 
     const { signOut } = useAuth()

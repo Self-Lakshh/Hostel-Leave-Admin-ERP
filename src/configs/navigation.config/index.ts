@@ -29,7 +29,7 @@ const navigationConfig: NavigationTree[] = [
     },
     {
         key: 'Manage Leave',
-        path: '/admin/manage-leave',
+        path: '/admin/manage-leaves',
         title: 'Manage Leave',
         translateKey: 'nav.manageLeave',
         icon: 'manageLeave',
@@ -57,7 +57,7 @@ const navigationConfig: NavigationTree[] = [
         authority: ['admin'],
         subMenu: [],
     },
-        {
+    {
         key: 'Manage Admins',
         path: '/admin/manage-admins',
         title: 'Manage Admins',
@@ -76,7 +76,7 @@ const navigationConfig: NavigationTree[] = [
         type: NAV_ITEM_TYPE_ITEM,
         authority: ['admin'],
         subMenu: [],
-    }
+    },
 ]
 
 export default navigationConfig

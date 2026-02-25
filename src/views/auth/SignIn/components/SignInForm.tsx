@@ -43,8 +43,8 @@ const SignInForm = (props: SignInFormProps) => {
         control,
     } = useForm<SignInFormSchema>({
         defaultValues: {
-            emp_id: 'SEC_001',
-            password: 'cTaxhdry+b',
+            emp_id: 'EMP001',
+            password: 'admin',
         },
         resolver: zodResolver(validationSchema),
     })
@@ -54,12 +54,17 @@ const SignInForm = (props: SignInFormProps) => {
     const onSignIn = async (values: SignInFormSchema) => {
         const { emp_id, password } = values
 
+        console.log('🚀 Attempting login with:', { emp_id, password })
+
         if (!disableSubmit) {
             setSubmitting(true)
 
             const result = await signIn({ emp_id, password })
 
+            console.log('📬 signIn() returned:', result)
+
             if (result?.status === 'failed') {
+                console.error('❌ Login failed:', result.message)
                 setMessage?.(result.message)
             }
         }

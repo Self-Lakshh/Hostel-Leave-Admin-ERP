@@ -9,7 +9,7 @@ export type AppConfig = {
 
 const appConfig: AppConfig = {
     apiPrefix: import.meta.env.VITE_BASE_URL || '/api',
-    authenticatedEntryPath: '/admin/out-request',
+    authenticatedEntryPath: '/admin/dashboard',
     unAuthenticatedEntryPath: '/login',
     locale: 'en',
     accessTokenPersistStrategy: 'cookies',
