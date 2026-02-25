@@ -68,7 +68,11 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     const handleSignOut = () => {
         setToken('')
-        setUser({})
+        setUser({
+            avatar: '',
+            userName: '',
+            authority: [],
+        })
         setSessionSignedIn(false)
     }
 
@@ -76,7 +80,14 @@ function AuthProvider({ children }: AuthProviderProps) {
         try {
             const resp = await apiSignIn(values)
             if (resp) {
-                handleSignIn({ accessToken: resp.token }, resp.user)
+                const user = {
+                    ...(resp.user || {
+                        authority: ['admin'],
+                    }),
+                    userName: values.emp_id,
+                    emp_id: values.emp_id
+                }
+                handleSignIn({ accessToken: resp.token }, user)
                 redirect()
                 return {
                     status: 'success',

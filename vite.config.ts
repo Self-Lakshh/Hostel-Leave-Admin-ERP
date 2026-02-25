@@ -9,7 +9,6 @@ export default defineConfig({
   assetsInclude: ['**/*.md'],
   resolve: {
     alias: {
-      '@/shadcn': path.join(__dirname, 'src/components/shadcn'),
       '@': path.join(__dirname, 'src'),
     },
   },

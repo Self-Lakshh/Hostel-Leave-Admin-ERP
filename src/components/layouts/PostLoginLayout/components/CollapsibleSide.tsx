@@ -1,55 +1,54 @@
-import { AppSidebar } from "@/shadcn/app-sidebar"
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/shadcn/breadcrumb"
-import { Separator } from "@/shadcn/separator"
-import {
-    SidebarInset,
-    SidebarProvider,
-    SidebarTrigger,
-} from "@/shadcn/sidebar"
-import LayoutBase from '@/components/template/LayoutBase'
+import SideNav from '@/components/template/SideNav'
+import Header from '@/components/template/Header'
+import SideNavToggle from '@/components/template/SideNavToggle'
+import MobileNav from '@/components/template/MobileNav'
+import UserProfileDropdown from '@/components//template/UserProfileDropdown'
+import LayoutBase from '@/components//template/LayoutBase'
+import useResponsive from '@/utils/hooks/useResponsive'
 import { LAYOUT_COLLAPSIBLE_SIDE } from '@/constants/theme.constant'
+import { useLocation } from 'react-router-dom'
 import type { CommonProps } from '@/@types/common'
 
 const CollapsibleSide = ({ children }: CommonProps) => {
+    const { larger, smaller } = useResponsive()
+    const { pathname } = useLocation()
+
+    const isAdminPortal = pathname.startsWith('/admin')
+
     return (
         <LayoutBase
             type={LAYOUT_COLLAPSIBLE_SIDE}
             className="app-layout-collapsible-side flex flex-auto flex-col"
         >
-            <SidebarProvider>
-                <AppSidebar />
-                <SidebarInset>
-                    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b border-border/40 px-6">
-                        <div className="flex items-center gap-2">
-                            <SidebarTrigger className="-ml-1" />
-                            <Separator orientation="vertical" className="mr-2 h-4" />
-                            <Breadcrumb>
-                                <BreadcrumbList>
-                                    <BreadcrumbItem className="hidden md:block">
-                                        <BreadcrumbLink href="#">
-                                            Applications
-                                        </BreadcrumbLink>
-                                    </BreadcrumbItem>
-                                    <BreadcrumbSeparator className="hidden md:block" />
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                                    </BreadcrumbItem>
-                                </BreadcrumbList>
-                            </Breadcrumb>
-                        </div>
-                    </header>
-                    <div className="flex flex-1 flex-col gap-4 p-6 pt-4 bg-muted/20">
+            <div className="flex flex-auto min-w-0">
+                {larger.lg && <SideNav />}
+                <div className="flex flex-col flex-auto h-screen min-w-0 relative w-full overflow-hidden">
+                    <Header
+                        className="shadow-sm dark:shadow-2xl"
+                        headerStart={
+                            <>
+                                {smaller.lg && <MobileNav />}
+                                {larger.lg && <SideNavToggle />}
+                            </>
+                        }
+                        headerMiddle={
+                            isAdminPortal && (
+                                <div className="text-[14px] font-semibold text-gray-700 hidden md:block">
+                                    SPSU Hostel Leave ERP - Admin Portal
+                                </div>
+                            )
+                        }
+                        headerEnd={
+                            <>
+                                <UserProfileDropdown hoverable={false} />
+                            </>
+                        }
+                    />
+                    <div className="h-full flex flex-auto flex-col">
                         {children}
                     </div>
-                </SidebarInset>
-            </SidebarProvider>
+                </div>
+            </div>
         </LayoutBase>
     )
 }

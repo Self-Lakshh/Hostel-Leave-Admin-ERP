@@ -38,7 +38,6 @@ const initialState: AuthState = {
     user: {
         avatar: '',
         userName: '',
-        email: '',
         authority: [],
     },
 }

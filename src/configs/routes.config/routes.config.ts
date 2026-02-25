@@ -6,52 +6,66 @@ export const publicRoutes: Routes = [...authRoute]
 
 export const protectedRoutes: Routes = [
     {
-        key: 'home',
+        key: 'Dashboard',
         path: '/admin/dashboard',
-        component: lazy(() => import('@/views/Home')),
-        authority: [],
-    },
-    /** Example purpose only, please remove */
-    {
-        key: 'singleMenuItem',
-        path: '/single-menu-view',
-        component: lazy(() => import('@/views/demo/SingleMenuView')),
-        authority: [],
+        component: lazy(() => import('@/views/admin/Overview')),
+        authority: ['admin'],
+        meta: {
+            pageContainerType: 'gutterless',
+        },
     },
     {
-        key: 'collapseMenu.item1',
-        path: '/collapse-menu-item-view-1',
-        component: lazy(() => import('@/views/demo/CollapseMenuItemView1')),
-        authority: [],
+        key: 'Manage Students',
+        path: '/admin/manage-students',
+        component: lazy(() => import('@/views/admin/ManageStudents')),
+        authority: ['admin'],
+        meta: {
+            pageContainerType: 'gutterless',
+        },
     },
     {
-        key: 'collapseMenu.item2',
-        path: '/collapse-menu-item-view-2',
-        component: lazy(() => import('@/views/demo/CollapseMenuItemView2')),
-        authority: [],
+        key: 'Manage Warden',
+        path: '/admin/manage-warden',
+        component: lazy(() => import('@/views/admin/ManageWarden')),
+        authority: ['admin'],
+        meta: {
+            pageContainerType: 'gutterless',
+        },
     },
     {
-        key: 'groupMenu.single',
-        path: '/group-single-menu-item-view',
-        component: lazy(() =>
-            import('@/views/demo/GroupSingleMenuItemView')
-        ),
-        authority: [],
+        key: 'Manage Asst Warden',
+        path: '/admin/manage-asst-warden',
+        component: lazy(() => import('@/views/admin/ManageAsstWarden')),
+        authority: ['admin'],
+        meta: {
+            pageContainerType: 'gutterless',
+        },
     },
     {
-        key: 'groupMenu.collapse.item1',
-        path: '/group-collapse-menu-item-view-1',
-        component: lazy(() =>
-            import('@/views/demo/GroupCollapseMenuItemView1')
-        ),
-        authority: [],
+        key: 'Manage Admins',
+        path: '/admin/manage-admins',
+        component: lazy(() => import('@/views/admin/ManageAdmins')),
+        authority: ['admin'],
+        meta: {
+            pageContainerType: 'gutterless',
+        },
+    },
+    {   
+        key: 'Manage Security',
+        path: '/admin/manage-security',
+        component: lazy(() => import('@/views/admin/ManageSecurity')),
+        authority: ['admin'],
+        meta: {
+            pageContainerType: 'gutterless',
+        },
     },
     {
-        key: 'groupMenu.collapse.item2',
-        path: '/group-collapse-menu-item-view-2',
-        component: lazy(() =>
-            import('@/views/demo/GroupCollapseMenuItemView2')
-        ),
-        authority: [],
+        key: 'Manage Leaves',
+        path: '/admin/manage-leaves',
+        component: lazy(() => import('@/views/admin/ManageLeaves')),
+        authority: ['admin'],
+        meta: {
+            pageContainerType: 'gutterless',
+        },
     },
 ]

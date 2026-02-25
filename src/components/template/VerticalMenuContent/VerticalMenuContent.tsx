@@ -63,11 +63,12 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
 
         return (
             <>
-                {navTree.map((nav) => (
+                {navTree.map((nav, index) => (
                     <Fragment key={nav.key}>
                         {nav.type === NAV_ITEM_TYPE_ITEM && (
                             <VerticalSingleMenuItem
                                 key={nav.key}
+                                className={index === 0 ? 'mt-4' : ''}
                                 currentKey={activedRoute?.key}
                                 parentKeys={defaulExpandKey}
                                 nav={nav}
@@ -87,6 +88,7 @@ const VerticalMenuContent = (props: VerticalMenuContentProps) => {
                         {nav.type === NAV_ITEM_TYPE_COLLAPSE && (
                             <VerticalCollapsedMenuItem
                                 key={nav.key}
+                                className={index === 0 ? 'mt-4' : ''}
                                 currentKey={activedRoute?.key}
                                 parentKeys={defaulExpandKey}
                                 nav={nav}

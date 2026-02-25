@@ -1,15 +1,15 @@
-import React, { lazy, Suspense } from 'react'
+import { lazy, Suspense } from 'react'
+import type { LazyExoticComponent, ReactElement } from 'react'
 import {
     LAYOUT_COLLAPSIBLE_SIDE,
 } from '@/constants/theme.constant'
 import Loading from '@/components/shared/Loading'
 import type { CommonProps } from '@/@types/common'
-import type { LazyExoticComponent } from 'react'
 import type { LayoutType } from '@/@types/theme'
 
 type Layouts = Record<
     string,
-    LazyExoticComponent<<T extends CommonProps>(props: T) => React.JSX.Element>
+    LazyExoticComponent<<T extends CommonProps>(props: T) => ReactElement>
 >
 
 interface PostLoginLayoutProps extends CommonProps {

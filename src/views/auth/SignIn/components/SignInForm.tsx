@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { Input } from '@/shadcn/input'
-import { Button } from '@/shadcn/button'
-import { Label } from '@/shadcn/label'
+import Input from '@/components/ui/Input'
+import Button from '@/components/ui/Button'
+import { FormItem, Form } from '@/components/ui/Form'
+import PasswordInput from '@/components/shared/PasswordInput'
+import classNames from '@/utils/classNames'
 import { useAuth } from '@/auth'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import type { ZodType } from 'zod'
 import type { CommonProps } from '@/@types/common'
 import type { ReactNode } from 'react'
@@ -18,15 +19,14 @@ interface SignInFormProps extends CommonProps {
 }
 
 type SignInFormSchema = {
-    email: string
+    emp_id: string
     password: string
 }
 
 const validationSchema: ZodType<SignInFormSchema> = z.object({
-    email: z
-        .string({ required_error: 'Please enter your email' })
-        .email({ message: 'Invalid email address' })
-        .min(1, { message: 'Please enter your email' }),
+    emp_id: z
+        .string({ required_error: 'Please enter your Employee ID' })
+        .min(1, { message: 'Please enter your Employee ID' }),
     password: z
         .string({ required_error: 'Please enter your password' })
         .min(1, { message: 'Please enter your password' }),
@@ -34,7 +34,6 @@ const validationSchema: ZodType<SignInFormSchema> = z.object({
 
 const SignInForm = (props: SignInFormProps) => {
     const [isSubmitting, setSubmitting] = useState<boolean>(false)
-    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const { disableSubmit = false, className, setMessage, passwordHint } = props
 
@@ -44,8 +43,8 @@ const SignInForm = (props: SignInFormProps) => {
         control,
     } = useForm<SignInFormSchema>({
         defaultValues: {
-            email: 'admin-01@ecme.com',
-            password: '123Qwe',
+            emp_id: 'SEC_001',
+            password: 'cTaxhdry+b',
         },
         resolver: zodResolver(validationSchema),
     })
@@ -53,12 +52,12 @@ const SignInForm = (props: SignInFormProps) => {
     const { signIn } = useAuth()
 
     const onSignIn = async (values: SignInFormSchema) => {
-        const { email, password } = values
+        const { emp_id, password } = values
 
         if (!disableSubmit) {
             setSubmitting(true)
 
-            const result = await signIn({ email, password })
+            const result = await signIn({ emp_id, password })
 
             if (result?.status === 'failed') {
                 setMessage?.(result.message)
@@ -70,75 +69,58 @@ const SignInForm = (props: SignInFormProps) => {
 
     return (
         <div className={className}>
-            <form onSubmit={handleSubmit(onSignIn)} className="flex flex-col gap-5">
-                <div className="flex flex-col gap-2">
-                    <Label className="text-white/80 ml-1 text-xs font-semibold uppercase tracking-wider">Email Address</Label>
+            <Form onSubmit={handleSubmit(onSignIn)}>
+                <FormItem
+                    label="Employee ID"
+                    invalid={Boolean(errors.emp_id)}
+                    errorMessage={errors.emp_id?.message}
+                >
                     <Controller
-                        name="email"
+                        name="emp_id"
                         control={control}
                         render={({ field }) => (
-                            <div className="relative">
-                                <Input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-12 px-4 rounded-xl focus:ring-primary/50 focus:border-primary/50 transition-all"
-                                    {...field}
-                                />
-                                {errors.email && (
-                                    <span className="text-red-400 text-[10px] mt-1 ml-1 font-medium">{errors.email.message}</span>
-                                )}
-                            </div>
+                            <Input
+                                type="text"
+                                placeholder="Employee ID"
+                                autoComplete="off"
+                                {...field}
+                            />
                         )}
                     />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between">
-                        <Label className="text-white/80 ml-1 text-xs font-semibold uppercase tracking-wider">Password</Label>
-                    </div>
+                </FormItem>
+                <FormItem
+                    label="Password"
+                    invalid={Boolean(errors.password)}
+                    errorMessage={errors.password?.message}
+                    className={classNames(
+                        passwordHint ? 'mb-0' : '',
+                        errors.password?.message ? 'mb-8' : '',
+                    )}
+                >
                     <Controller
                         name="password"
                         control={control}
+                        rules={{ required: true }}
                         render={({ field }) => (
-                            <div className="relative">
-                                <Input
-                                    type={showPassword ? 'text' : 'password'}
-                                    placeholder="Enter your password"
-                                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30 h-12 px-4 pr-12 rounded-xl focus:ring-primary/50 focus:border-primary/50 transition-all"
-                                    {...field}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
-                                >
-                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                                {errors.password && (
-                                    <span className="text-red-400 text-[10px] mt-1 ml-1 font-medium">{errors.password.message}</span>
-                                )}
-                            </div>
+                            <PasswordInput
+                                type="text"
+                                placeholder="Password"
+                                autoComplete="off"
+                                {...field}
+                            />
                         )}
                     />
-                </div>
-
+                </FormItem>
                 {passwordHint}
-
                 <Button
-                    disabled={isSubmitting || disableSubmit}
-                    className="h-12 rounded-xl bg-primary hover:bg-primary-deep text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+                    block
+                    loading={isSubmitting}
+                    variant="solid"
                     type="submit"
                 >
-                    {isSubmitting ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Signing in...
-                        </>
-                    ) : (
-                        'Sign In'
-                    )}
+                    {isSubmitting ? 'Signing in...' : 'Sign In'}
                 </Button>
-            </form>
+            </Form>
         </div>
     )
 }

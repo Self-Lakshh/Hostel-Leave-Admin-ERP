@@ -1,21 +1,16 @@
 import {
-    PiHouseLineDuotone,
-    PiArrowsInDuotone,
-    PiBookOpenUserDuotone,
-    PiBookBookmarkDuotone,
-    PiAcornDuotone,
-    PiBagSimpleDuotone
-} from 'react-icons/pi'
+  LogOut,
+  LogIn,
+  FileText,
+} from "lucide-react"
+import type { ReactElement } from "react"
 
-export type NavigationIcons = Record<string, JSX.Element>
+export type NavigationIcons = Record<string, ReactElement>
 
 const navigationIcon: NavigationIcons = {
-    home: <PiHouseLineDuotone />,
-    singleMenu: <PiAcornDuotone />,
-    collapseMenu: <PiArrowsInDuotone />,
-    groupSingleMenu: <PiBookOpenUserDuotone />,
-    groupCollapseMenu: <PiBookBookmarkDuotone />,
-    groupMenu: <PiBagSimpleDuotone />
+  outRequest: <LogOut size={18} />,
+  inRequest: <LogIn size={18} />,
+  leaveRecords: <FileText size={18} />,
 }
 
 export default navigationIcon

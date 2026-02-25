@@ -118,14 +118,14 @@ const PageContainer = (props: PageContainerProps) => {
         pageBackgroundType = 'default',
         children,
         header,
-        footer = true,
+        footer = false,
     } = props
 
     const { pageContainerReassemble } = useLayout()
 
-    const defaultClass = 'h-full flex flex-auto flex-col justify-between'
+    const defaultClass = 'h-full flex flex-auto flex-col justify-between overflow-hidden'
     const pageContainerDefaultClass =
-        'page-container relative h-full flex flex-auto flex-col'
+        'page-container relative h-full flex flex-auto flex-col overflow-hidden'
     const pageContainerGutterClass = `${PAGE_CONTAINER_GUTTER_X} ${PAGE_CONTAINER_GUTTER_Y}`
 
     return (
@@ -149,17 +149,17 @@ const PageContainer = (props: PageContainerProps) => {
                     className={classNames(
                         defaultClass,
                         pageBackgroundType === 'plain' &&
-                            'bg-white dark:bg-gray-900',
+                        'bg-white dark:bg-gray-900',
                     )}
                 >
-                    <main className="h-full">
+                    <main className="h-full overflow-hidden">
                         <div
                             className={classNames(
                                 pageContainerDefaultClass,
                                 pageContainerType !== 'gutterless' &&
-                                    pageContainerGutterClass,
+                                pageContainerGutterClass,
                                 pageContainerType === 'contained' &&
-                                    'container mx-auto',
+                                'container mx-auto',
                                 !footer && 'pb-0 sm:pb-0 md:pb-0',
                             )}
                         >
@@ -168,6 +168,7 @@ const PageContainer = (props: PageContainerProps) => {
                                 gutterLess={pageContainerType === 'gutterless'}
                             />
                             <PageContainerBody
+                                className="h-full overflow-auto"
                                 pageContainerType={pageContainerType}
                             >
                                 {children}

@@ -27,8 +27,9 @@ const PasswordInput = (props: PasswordInputProps) => {
             type={pwInputType}
             suffix={
                 <span
-                    className="cursor-pointer select-none text-xl"
+                    className="cursor-pointer select-none flex items-center justify-center text-2xl text-gray-400 hover:text-primary transition-colors duration-200 rounded-full p-1 hover:bg-primary/10"
                     role="button"
+                    aria-label={pwInputType === 'password' ? 'Show password' : 'Hide password'}
                     onClick={onPasswordVisibleClick}
                 >
                     {pwInputType === 'password' ? (

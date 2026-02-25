@@ -5,18 +5,22 @@ import { useSessionUser } from '@/store/authStore'
 import { Link } from 'react-router-dom'
 import { PiUserDuotone, PiSignOutDuotone } from 'react-icons/pi'
 import { useAuth } from '@/auth'
+import { ReactElement } from 'react'
 
 type DropdownList = {
     label: string
     path: string
-    icon: JSX.Element
+    icon: ReactElement
 }
 
 const dropdownItemList: DropdownList[] = [
 ]
 
 const _UserDropdown = () => {
-    const { avatar, userName, email } = useSessionUser((state) => state.user)
+    const user = useSessionUser((state) => state.user)
+    const userName = user?.emp_id
+    const email = 'Security Gate'
+    const avatar = user?.avatar
 
     const { signOut } = useAuth()
 
@@ -24,8 +28,18 @@ const _UserDropdown = () => {
         signOut()
     }
 
-    const avatarProps = {
-        ...(avatar ? { src: avatar } : { icon: <PiUserDuotone /> }),
+    const UserAvatar = ({ size }: { size?: number | 'sm' | 'md' | 'lg' }) => {
+        const initials = (userName || 'SG').substring(0, 2).toUpperCase()
+
+        return (
+            <Avatar
+                size={size}
+                src={avatar || undefined}
+                className={!avatar ? 'bg-primary text-white font-bold' : ''}
+            >
+                {!avatar ? initials : null}
+            </Avatar>
+        )
     }
 
     return (
@@ -33,15 +47,18 @@ const _UserDropdown = () => {
             className="flex"
             toggleClassName="flex items-center"
             renderTitle={
-                <div className="cursor-pointer flex items-center">
-                    <Avatar size={32} {...avatarProps} />
+                <div className="cursor-pointer flex items-center gap-2">
+                    <span className="hidden md:inline text-[12px] font-medium text-gray-500">
+                        Welcome, <span className="font-bold text-gray-900">{userName}</span>
+                    </span>
+                    <UserAvatar size={32} />
                 </div>
             }
             placement="bottom-end"
         >
             <Dropdown.Item variant="header">
                 <div className="py-2 px-3 flex items-center gap-3">
-                    <Avatar {...avatarProps} />
+                    <UserAvatar />
                     <div>
                         <div className="font-bold text-gray-900 dark:text-gray-100">
                             {userName || 'Anonymous'}
